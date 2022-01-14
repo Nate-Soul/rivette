@@ -10,9 +10,7 @@
                 {% csrf_token %}
                 <div class="input-group mb-3">
                     {{ form.task_input }}
-                    <div class="input-group-append">
-                        <button type="submit" class="btn btn-sm btn-secondary"> Save Task </button>
-                    </div>
+                    <button type="submit" class="btn btn-secondary"> Save Task </button>
                 </div>
             </form>
             <ul class="list-group">
@@ -104,10 +102,10 @@
                     <div class="alert alert-info">There are no task at the moment. Add task to the list</div>                    
                 {% endif %}
             </ul>
-            <div class="button-group my-5">
-                <a href="#completeModal" data-bs-toggle="modal" class="btn btn-block btn-success"> Complete All </a>
-                <a href="#resetModal" data-bs-toggle="modal" class="btn btn-block btn-warning"> Reset Completed </a>
-                <a href="#deleteModal" data-bs-toggle="modal" class="btn btn-block btn-danger"> Delete Completed </a>
+            <div class="button-group-vertical my-5">
+                <a href="#completeModal" data-bs-toggle="modal" class="btn btn-success mb-3 w-100"> Complete All </a>
+                <a href="#resetModal" data-bs-toggle="modal" class="btn btn-warning my-3 w-100"> Reset Completed </a>
+                <a href="#deleteModal" data-bs-toggle="modal" class="btn btn-danger mt-3 w-100"> Delete Completed </a>
             </div>
         </div>
     </div>
