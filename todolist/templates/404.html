@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+
+{% block main-content %}
+    <div class="d-flex justify-content-center align-items-center p-5 flex-column text-center">
+        <hgroup>
+            <h1 class="h1">Bad Request</h1>
+            <h3 class="h3 mb-2">
+                <strong>Oops!</strong> looks like you've landed on a bad page. 
+            </h3>
+        </hgroup>
+        <p>
+            Uh... So it looks like you brock something. The page you are looking for has up and Vanished.
+        </p>
+        <a href="{% url 'home' %}" class="btn btn-lg btn-primary">Take me back home</a>
+    </div>
+{% endblock main-content %}
+    

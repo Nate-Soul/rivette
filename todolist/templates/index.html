@@ -1,0 +1,201 @@
+{% extends 'base.html' %}
+
+{% block main-content %}
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title"> Tasks </h4>
+        </div>
+        <div class="card-body">
+            <form action="{% url 'add' %}" method="POST">
+                {% csrf_token %}
+                <div class="input-group mb-3">
+                    {{ form.task_input }}
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-sm btn-secondary"> Save Task </button>
+                    </div>
+                </div>
+            </form>
+            <ul class="list-group">
+                <li class="list-group-item disabled bg-info text-light"> TASKS </li>
+                {% if todos %}
+                    {% for todo in todos %}
+                        <li class="list-group-item d-flex justify-content-between">
+                            {% if todo.complete %}
+                                <del>{{ todo.task }}</del> 
+                                <span>
+                                    <a href="#resetTaskModal{{ todo.id }}" data-bs-toggle="modal" class="btn btn-sm btn-warning">
+                                        Reset
+                                    </a>
+                                    <a href="#deleteTaskModal{{ todo.id }}" data-bs-toggle="modal" class="btn btn-sm btn-danger">
+                                        Remove
+                                    </a>
+                                </span>
+                            {% else %}
+                            {{todo.task}} 
+                            <span>
+                                <a href="#completeTaskModal{{ todo.id }}" data-bs-toggle="modal" class="btn btn-sm btn-success">
+                                    Complete
+                                </a>
+                                <a href="#deleteTaskModal{{ todo.id }}" data-bs-toggle="modal" class="btn btn-sm btn-danger">
+                                    Remove
+                                </a>
+                            </span>
+                            {% endif %}
+                        </li>
+                        <!-- complete Task Modal-->
+                        <div class="modal fade" id="completeTaskModal{{ todo.id }}" tabindex="-1" aria-labelledby="completeTaskModalLabel" aria-modal="true" role="dialog">
+                            <div class="modal-dialog modal-sm">
+                                <div class="modal-content">
+                                    <div class="modal-header bg-success text-white">
+                                        <h5 class="modal-title" id="completeTaskModalLabel">Complete Task</h5>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>
+                                            Are you sure you want to complete task "{{ todo.task }}"?
+                                        </p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                        <a href="{% url 'complete' todo.id %}" type="button" class="btn btn-success">Continue</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Reset Task Modal-->
+                        <div class="modal fade" id="resetTaskModal{{ todo.id }}" tabindex="-1" aria-labelledby="resetTaskModalLabel" aria-modal="true" role="dialog">
+                            <div class="modal-dialog modal-sm">
+                                <div class="modal-content">
+                                    <div class="modal-header bg-warning text-white">
+                                        <h5 class="modal-title" id="resetTaskModalLabel">Reset Task</h5>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>
+                                            Are you sure you want to reset task "{{ todo.task }}"?
+                                        </p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                        <a href="{% url 'reset' todo.id %}" type="button" class="btn btn-warning">Continue</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Delete Task Modal-->
+                        <div class="modal fade" id="deleteTaskModal{{ todo.id }}" tabindex="-1" aria-labelledby="deleteTaskModalLabel" aria-modal="true" role="dialog">
+                            <div class="modal-dialog modal-sm">
+                                <div class="modal-content">
+                                    <div class="modal-header bg-danger text-white">
+                                        <h5 class="modal-title" id="deleteTaskModalLabel">Delete Task</h5>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>
+                                            Are you sure you want to delete task "{{ todo.task }}"?
+                                        </p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                        <a href="{% url 'remove' todo.id %}" type="button" class="btn btn-danger">Continue</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="alert alert-info">There are no task at the moment. Add task to the list</div>                    
+                {% endif %}
+            </ul>
+            <div class="button-group my-5">
+                <a href="#completeModal" data-bs-toggle="modal" class="btn btn-block btn-success"> Complete All </a>
+                <a href="#resetModal" data-bs-toggle="modal" class="btn btn-block btn-warning"> Reset Completed </a>
+                <a href="#deleteModal" data-bs-toggle="modal" class="btn btn-block btn-danger"> Delete Completed </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block side-content %}
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">App Features</h4>
+            <p class="card-text">
+                Minimal full-stack todo-app built with love using;
+            </p>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item disabled text-primary h6 text-uppercase">Bootstrap 5.x</li>
+            <li class="list-group-item">Jumbotron</li>
+            <li class="list-group-item">Forms</li>
+            <li class="list-group-item">Buttons</li>
+            <li class="list-group-item">Cards</li>
+            <li class="list-group-item">List groups</li>
+            <li class="list-group-item">Modals</li>
+            <li class="list-group-item disabled text-primary h6 text-uppercase">Django 3.2.x</li>
+            <li class="list-group-item">Models, Views & Templates</li>
+            <li class="list-group-item">Forms</li>
+            <li class="list-group-item">Decorators</li>
+            <li class="list-group-item disabled text-primary h6 text-uppercase">Database</li>
+            <li class="list-group-item">PostgreSQL</li>
+        </ul>
+    </div>
+{% endblock %}
+
+{% block modal-content %}        
+<!-- Delete Modal-->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="deleteModalLabel">Modal title</h5>
+            </div>
+            <div class="modal-body">
+                <p>
+                    Are you sure you want to delete all completed tasks?
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <a href="{% url 'deletes' %}" type="button" class="btn btn-danger">Continue</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Reset Modal-->
+<div class="modal fade" id="resetModal" tabindex="-1" aria-labelledby="resetModalLabel" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header bg-warning text-white">
+                <h5 class="modal-title" id="resetModalLabel">Reset Tasks</h5>
+            </div>
+            <div class="modal-body">
+                <p>
+                    Are you sure you want to reset all completed tasks?
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <a href="{% url 'resets' %}" type="button" class="btn btn-warning">Continue</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Complete Modal-->
+<div class="modal fade" id="completeModal" tabindex="-1" aria-labelledby="completeModalLabel" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title" id="completeModalLabel">Complete Tasks</h5>
+            </div>
+            <div class="modal-body">
+                <p>
+                    Are you sure you want to complete all tasks?
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <a href="{% url 'completes' %}" type="button" class="btn btn-success">Continue</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+    
+    
